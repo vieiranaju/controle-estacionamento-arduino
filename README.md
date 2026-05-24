@@ -1,66 +1,81 @@
 # Sistema de Controle de Estacionamento com Arduino
 
-Este repositório contém o código de um sistema automatizado para um estacionamento universitário de 20 vagas. O projeto foi feito para a Avaliação 01 da disciplina de Sistemas Embarcados e possui duas versões: uma utilizando um display LCD e outra utilizando um display de 7 segmentos.
+Sistema embarcado desenvolvido para gerenciar um estacionamento universitário com 20 vagas. O projeto conta com duas versões complementares — uma com display LCD e outra com display de 7 segmentos —, ambas simuladas no Tinkercad e programadas em C++ para Arduino.
 
 ---
 
 ## 1. Versão com Display LCD (`estacionamento_lcd.ino`)
 
-Nesta versão, as informações detalhadas sobre o estado do estacionamento aparecem na tela LCD, e o controle de abertura e fechamento da catraca é feito manualmente passo a passo.
+Nesta versão, o foco está em fornecer ao operador feedback textual completo sobre o estado do sistema. A cancela é controlada manualmente em duas etapas: o operador abre para o veículo entrar e fecha assim que o veículo passou.
 
 ### Como funciona
-* **Entrada:** Um botão serve para registrar a entrada. Quando apertado, a catraca (representada pelo servo motor) se abre e o LED verde acende indicando passagem liberada.
-* **Saída:** O outro botão serve para registrar a saída. Ele indica que o carro já passou, então a catraca fecha e o LED vermelho acende.
-* **Tela:** O display LCD mostra as mensagens de status e a quantidade de vagas ainda disponíveis.
-* **Lotação:** Se as 20 vagas estiverem ocupadas, o sistema não abre a catraca para novos carros e mostra um aviso de lotado na tela.
+
+- **Estado inicial:** Ao ligar, a cancela começa fechada, o LED vermelho acende e o LCD exibe a mensagem de boas-vindas com o total de vagas disponíveis. O Serial Monitor também registra a inicialização.
+- **Botão de entrada (pino 2):** Ao ser pressionado, o sistema verifica se ainda há vagas. Se sim, a cancela abre (servo gira para 90°), o LED verde acende no lugar do vermelho, o contador de vagas ocupadas é incrementado e o LCD é atualizado com o número de vagas restantes.
+- **Botão de saída (pino 4):** Indica que o veículo já passou pela cancela. Ao ser pressionado, a cancela fecha (servo volta para 0°), o LED vermelho volta a acender e o LCD exibe a confirmação.
+- **Estacionamento lotado:** Se todas as 20 vagas estiverem ocupadas, pressionar o botão de entrada não abre a cancela. O LED vermelho pisca três vezes rapidamente, o LCD exibe o aviso de lotação e o Serial Monitor registra a tentativa bloqueada.
+- **Estado persistente:** O estado da cancela é mantido em memória — ela permanece aberta ou fechada até que o botão correspondente seja acionado, sem repetir ações enquanto o botão estiver pressionado.
+- **Serial Monitor (9600 baud):** Cada ação gera exatamente uma mensagem de log: inicialização, entrada registrada com contagem atualizada, fechamento da cancela ou aviso de lotação.
 
 ### Componentes Utilizados
-* 1x Placa compatível com Arduino Uno
-* 1x Servo Motor (simula a catraca)
-* 1x Display LCD 16x2
-* 1x Potenciômetro (necessário para controlar o contraste/iluminação da tela LCD)
-* 2x Botões (um para abrir e outro para fechar)
-* 1x LED Verde e 1x LED Vermelho
-* Resistores de 220 Ω (para proteger os LEDs)
-* Protoboard e Jumpers
+
+| Componente | Quantidade |
+|---|---|
+| Arduino Uno | 1x |
+| Servo Motor (simula a cancela) | 1x |
+| Display LCD 16×2 | 1x |
+| Potenciômetro (contraste do LCD) | 1x |
+| Pushbutton | 2x |
+| LED Verde + LED Vermelho | 1x cada |
+| Resistor 220 Ω | 2x |
+| Protoboard e Jumpers | — |
 
 ### Link e Esquema do Circuito (LCD)
-* [Acesse a simulação do projeto com LCD aqui](https://www.tinkercad.com/things/bxbln3NHE4A-sistema-de-controle-de-estacionamento-lcd-?sharecode=JE2NZ-yYD0uaDjFMk3yzNADwzjPYZMcXKfjCliAB1YM)
 
-![Esquema do Circuito - Versão LCD](imagens/Sistema%20de%20Controle%20de%20Estacionamento%20-%20LCD%20.pngSistema de Controle de Estacionamento - LCD .png)
+- [Acesse a simulação no Tinkercad — Versão LCD](https://www.tinkercad.com/things/bxbln3NHE4A-sistema-de-controle-de-estacionamento-lcd-?sharecode=JE2NZ-yYD0uaDjFMk3yzNADwzjPYZMcXKfjCliAB1YM)
+
+![Esquema do Circuito - Versão LCD](<imagens/Sistema de Controle de Estacionamento - LCD .png>)
 
 ---
 
 ## 2. Versão com Display de 7 Segmentos (`estacionamento_7seg.ino`)
 
-Nesta segunda versão, o sistema foca em mostrar o número exato de vagas livres de forma direta e rápida através do display numérico de 7 segmentos, funcionando de uma forma um pouco mais automática.
+Nesta versão, a prioridade é mostrar o número de vagas livres de forma direta e instantânea através de um display numérico. O comportamento da cancela também é diferente: ela opera de forma automática, abrindo e fechando sozinha após um tempo fixo, sem necessidade de uma segunda ação do operador.
 
 ### Como funciona
-* **Entrada:** Um botão é usado para a entrada. Ao ser pressionado, o número de vagas na tela diminui e a catraca abre para o carro entrar, fechando sozinha depois de alguns segundos.
-* **Saída:** O outro botão é usado para a saída. Quando pressionado, ele libera uma vaga, o número na tela aumenta, e a catraca também abre para o carro sair, fechando sozinha logo em seguida.
-* **Tela:** O display de 7 segmentos serve exclusivamente para mostrar a quantidade atualizada de vagas livres.
+
+O display de 7 segmentos utilizado é o **Adafruit 0.56" 4-Digit 7-Segment Display**, que se comunica com o Arduino pelo protocolo **I²C** (pinos SDA e SCL). A biblioteca `Adafruit_LEDBackpack` é responsável por enviar os dados ao display: basta chamar `display.print()` com o valor inteiro e depois `display.writeDisplay()` para atualizar o que aparece na tela. O endereço I²C padrão do módulo é `0x70`.
+
+- **Botão de entrada (pino 2):** Ao ser pressionado, o sistema verifica se há vagas. Se sim, incrementa o contador de vagas ocupadas, atualiza o número no display, abre a cancela (LED verde acende, servo vai para 90°) e, após 3 segundos, fecha automaticamente (servo volta para 0°, LED vermelho volta a acender).
+- **Botão de saída (pino 4):** Ao ser pressionado, o contador de vagas ocupadas é decrementado, o display é atualizado com o novo número de vagas livres e a cancela abre por 3 segundos para o veículo sair, fechando em seguida da mesma forma automática.
+- **Estacionamento lotado:** Com 20 vagas ocupadas, o botão de entrada não abre a cancela. O LED vermelho pisca três vezes e o Serial Monitor registra a tentativa bloqueada.
+- **Serial Monitor (9600 baud):** Registra cada movimentação com o número de vagas ocupadas e livres no momento da ação.
 
 ### Componentes Utilizados
-* 1x Placa compatível com Arduino Uno
-* 1x Servo Motor (simula a catraca)
-* 1x Display de 7 Segmentos I2C (Adafruit LED Backpack)
-* 2x Botões (um de entrada e um de saída)
-* 1x LED Verde e 1x LED Vermelho
-* Resistores de 220 Ω (para proteger os LEDs)
-* Protoboard e Jumpers
+
+| Componente | Quantidade |
+|---|---|
+| Arduino Uno | 1x |
+| Servo Motor (simula a cancela) | 1x |
+| Display de 7 Segmentos I²C (Adafruit LED Backpack) | 1x |
+| Pushbutton | 2x |
+| LED Verde + LED Vermelho | 1x cada |
+| Resistor 220 Ω | 2x |
+| Protoboard e Jumpers | — |
 
 ### Link e Esquema do Circuito (7 Segmentos)
-* [Acesse a simulação do projeto com 7 Segmentos aqui](https://www.tinkercad.com/things/d7oOhoP8BFs-sistema-de-controle-de-estacionamento-tela-de-7-segmentos-?sharecode=_1YMt9BAXqA3X_FSxMk1w2unYoon7Y6uk_H0TESiCq0)
 
-![Esquema do Circuito - Versão 7 Segmentos](imagens/Sistema%20de%20Controle%20de%20Estacionamento%20-%20tela%20de%207%20segmentos%20.pngSistema de Controle de Estacionamento - LCD .png)
+- [Acesse a simulação no Tinkercad — Versão 7 Segmentos](https://www.tinkercad.com/things/d7oOhoP8BFs-sistema-de-controle-de-estacionamento-tela-de-7-segmentos-?sharecode=_1YMt9BAXqA3X_FSxMk1w2unYoon7Y6uk_H0TESiCq0)
+
+![Esquema do Circuito - Versão 7 Segmentos](<imagens/Sistema de Controle de Estacionamento - tela de 7 segmentos .png>)
 
 ---
 
 ## Como rodar o código
 
-1. Faça o download dos arquivos `.ino`.
-2. Abra o arquivo desejado na Arduino IDE.
-3. Se for testar a versão do LCD, não precisa baixar bibliotecas extras (a `LiquidCrystal` e a `Servo` já vêm na IDE).
-4. Se for testar a versão de 7 Segmentos, instale a biblioteca `Adafruit LED Backpack` pelo gerenciador da IDE.
-5. Conecte os componentes conforme a montagem do simulador e faça o upload para a placa.
-6. Abra o Monitor Serial (9600 baud) para acompanhar o texto gerado por trás das ações.
+1. Faça o download do arquivo `.ino` desejado.
+2. Abra-o na **Arduino IDE**.
+3. **Versão LCD:** nenhuma biblioteca extra é necessária — `LiquidCrystal` e `Servo` já estão incluídas na IDE por padrão.
+4. **Versão 7 Segmentos:** instale as bibliotecas `Adafruit LED Backpack` e `Adafruit GFX` pelo gerenciador de bibliotecas da IDE.
+5. Monte o circuito conforme o esquema do simulador e faça o upload para a placa.
+6. Abra o **Serial Monitor** em **9600 baud** para acompanhar os logs gerados a cada ação.
