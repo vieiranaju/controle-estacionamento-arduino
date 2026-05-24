@@ -25,9 +25,9 @@ Nesta versão, as informações detalhadas sobre o estado do estacionamento apar
 * Protoboard e Jumpers
 
 ### Link e Esquema do Circuito (LCD)
-* [Acesse a simulação do projeto com LCD aqui](INSIRA_O_LINK_AQUI)
+* [Acesse a simulação do projeto com LCD aqui](https://www.tinkercad.com/things/bxbln3NHE4A-sistema-de-controle-de-estacionamento-lcd-?sharecode=JE2NZ-yYD0uaDjFMk3yzNADwzjPYZMcXKfjCliAB1YM)
 
-![Esquema do Circuito - Versão LCD](INSIRA_O_CAMINHO_DA_IMAGEM_AQUI)
+![Esquema do Circuito - Versão LCD](imagens/Sistema%20de%20Controle%20de%20Estacionamento%20-%20LCD%20.pngSistema de Controle de Estacionamento - LCD .png)
 
 ---
 
@@ -50,9 +50,9 @@ Nesta segunda versão, o sistema foca em mostrar o número exato de vagas livres
 * Protoboard e Jumpers
 
 ### Link e Esquema do Circuito (7 Segmentos)
-* [Acesse a simulação do projeto com 7 Segmentos aqui](INSIRA_O_LINK_AQUI)
+* [Acesse a simulação do projeto com 7 Segmentos aqui](https://www.tinkercad.com/things/d7oOhoP8BFs-sistema-de-controle-de-estacionamento-tela-de-7-segmentos-?sharecode=_1YMt9BAXqA3X_FSxMk1w2unYoon7Y6uk_H0TESiCq0)
 
-![Esquema do Circuito - Versão 7 Segmentos](INSIRA_O_CAMINHO_DA_IMAGEM_AQUI)
+![Esquema do Circuito - Versão 7 Segmentos](imagens/Sistema%20de%20Controle%20de%20Estacionamento%20-%20tela%20de%207%20segmentos%20.pngSistema de Controle de Estacionamento - LCD .png)
 
 ---
 
