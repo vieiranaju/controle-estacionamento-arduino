@@ -21,7 +21,7 @@ O sistema inicia com a cancela fechada (LED vermelho aceso). Ao pressionar o bot
 | Servo Motor (cancela) | 9 |
 | LCD (RS, E, D4–D7) | 13, 12, 11, 10, 6, 5 |
 
-> Além disso: 1x potenciômetro para o contraste do LCD, 2x resistores 220 Ω para os LEDs.
+> Além disso: 1x potenciômetro para o contraste do LCD, 2x resistores 220 Ω para os LEDs e 2x resistores 220 Ω para os botões.
 
 ### Simulação
 
@@ -50,7 +50,7 @@ O botão de entrada ocupa uma vaga e abre a cancela; o botão de saída libera u
 | Servo Motor (cancela) | 9 |
 | Display I²C (SDA/SCL) | A4 / A5 |
 
-> Além disso: 2x resistores 220 Ω para os LEDs.
+> Além disso: 2x resistores 220 Ω para os LEDs, e 2x resistores 220 Ω para os botões.
 
 ### Simulação
 
