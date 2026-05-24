@@ -8,7 +8,7 @@ Sistema embarcado para gerenciar um estacionamento universitário com 20 vagas, 
 
 A cancela é controlada manualmente: um botão abre, outro fecha. O LCD exibe o status atual e o Serial Monitor registra cada movimentação.
 
-O sistema arranca com a cancela fechada (LED vermelho aceso). Ao pressionar o botão de entrada, a cancela abre e o LED muda para verde — isso só acontece se ainda houver vagas. Quando o veículo já passou, o botão de saída fecha a cancela e o LED volta ao vermelho. Se o estacionamento estiver lotado, o LED vermelho pisca três vezes e a cancela permanece fechada.
+O sistema inicia com a cancela fechada (LED vermelho aceso). Ao pressionar o botão de entrada, a cancela abre e o LED muda para verde, isso só acontece se ainda houver vagas. Quando o veículo já passou, o botão de saída é pressionado, e fecha a cancela e o LED volta ao vermelho. Se o estacionamento estiver lotado, o LED vermelho pisca três vezes e a cancela permanece fechada.
 
 ### Componentes
 
@@ -33,7 +33,7 @@ O sistema arranca com a cancela fechada (LED vermelho aceso). Ao pressionar o bo
 
 ## 2. Versão com Display de 7 Segmentos (`estacionamento_7seg.ino`)
 
-Nessa versão a cancela opera de forma automática: ela abre sozinha ao pressionar o botão e fecha após 3 segundos, sem precisar de uma segunda ação. O display mostra em tempo real quantas vagas estão livres.
+Nessa versão a cancela opera de forma automática: ela abre ao pressionar o botão e fecha após 3 segundos, somando ao número de carros no estacionamento, já o segundo botão funciona como uma sáida do estacionamento, então a cancela abre, e o número de vagas é diminuido antes que seja fechada novamente. O display mostra quantas vagas estão livres e é atualizado a cada interação com os botões.
 
 O display utilizado é o módulo **Adafruit 4-Digit 7-Segment** com comunicação **I²C** (endereço `0x70`). A biblioteca `Adafruit_LEDBackpack` cuida de toda a comunicação — basta passar o número para `display.print()` e chamar `display.writeDisplay()` para atualizar o que aparece na tela.
 
