@@ -8,7 +8,7 @@ Sistema embarcado para gerenciar um estacionamento universitário com 20 vagas, 
 
 A cancela é controlada manualmente: um botão abre, outro fecha. O LCD exibe o status atual e o Serial Monitor registra cada movimentação.
 
-O sistema inicia com a cancela fechada (LED vermelho aceso). Ao pressionar o botão de entrada, a cancela abre e o LED muda para verde, isso só acontece se ainda houver vagas. Quando o veículo já passou, o botão de saída é pressionado, e fecha a cancela e o LED volta ao vermelho. Se o estacionamento estiver lotado, o LED vermelho pisca três vezes e a cancela permanece fechada.
+O sistema inicia com a cancela fechada (LED vermelho aceso). Ao pressionar o botão de entrada, a cancela abre e o LED verde é aceso, isso só acontece se ainda houver vagas. Quando o veículo já passou, o botão de saída é pressionado, o que fecha a cancela e o LED vermelho volta a estar aceso. Se o estacionamento estiver lotado, o LED vermelho pisca três vezes e a cancela permanece fechada.
 
 ### Componentes
 
